@@ -13,7 +13,7 @@ class Database
 		file = File.open("artists.html", "w")
 
 		@artist_array.each do |artist|
-			file.puts ('<div class="rank_' + artist.rank + '" ' + 'href="' + artist.full_url + '">' + artist.name + '</div>')
+			file.puts ('<div class="rank_' + artist.rank + '" ' + 'href="' + artist.artist_url + '">' + artist.name + '</div>')
 		end
 
 		file.close
@@ -22,12 +22,13 @@ class Database
 end
 
 class Artist
-	attr_accessor :rank, :name, :full_url
+	attr_accessor :rank, :name, :artist_url
 
-	def initialize(rank, name, full_url)
+	def initialize(rank, name, artist_url, photo_links)
 		@rank = rank
 		@name = name
-		@full_url = full_url
+		@artist_url = artist_url
+		@photo_links = photo_links
 	end
 end
 
@@ -46,17 +47,28 @@ class Runner
 		city = "Portland".delete("'").gsub(/\W+/, "+")
 		full_url = BASE_HYPED_URL + "/" + country + "/" + city
 
-		page = Nokogiri::HTML(open(full_url))
-		artists = page.css('div.rankItem-wrap2 a.rankItem-blockLink')[0..4]
+		hyped_page = Nokogiri::HTML(open(full_url))
+		artists = hyped_page.css('div.rankItem-wrap2 a.rankItem-blockLink')[0..4]
 
 		artists.each do |artist|
 			rank = artist.css("h4 span.rankItem-position").text.delete(".")
 			name = artist.css("h4 span.rankItem-title").text
-			full_url = BASE_ARTIST_URL + artist['href']
-			@db.artist_array << Artist.new(rank, name, full_url)
+			artist_url = BASE_ARTIST_URL + artist['href']
+
+			images_page = Nokogiri::HTML(open(artist_url + "/+images"))
+			photos = images_page.css("ul#pictures.pictures.clearit li a img")[0..11]
+
+			photo_links = []
+			photos.each do |photo|
+				photo_links << photo['src']
+			end
+
+			@db.artist_array << Artist.new(rank, name, artist_url, photo_links)
 		end
 
-		@db.add_to_file
+		puts @db.artist_array.inspect
+
+		# @db.add_to_file
 	end
 end
 
