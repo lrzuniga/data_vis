@@ -1,0 +1,34 @@
+html {
+	margin: 0;
+}
+
+.container {
+	width: 856px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.rank img {
+	width: 126px;
+	margin: 0 10px 10px 0;
+	display: inline-block;
+	float: left;
+	border-radius: 3px;
+}
+
+.rank img.last-in-row {
+	margin-right: 0;
+}
+
+.one div {
+	width: 262px;
+	height: 126px;
+	margin: 0 10px 10px 0;
+	display: inline-block;
+	float: left;
+	background-color: #3f0d09;
+	border-radius: 3px;
+	color: #ffcc66;
+	text-align: center;
+	line-height: 63px;
+}
