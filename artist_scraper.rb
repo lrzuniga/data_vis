@@ -3,27 +3,8 @@ require 'nokogiri'
 require 'open-uri'
 require 'erb'
 
-class Database
-	attr_accessor :artist_array
-
-	def initialize
-		@artist_array = []
-	end
-		
-	def add_to_file
-		file = File.open("artists.html", "w")
-
-		@artist_array.each do |artist|
-			file.puts () #need way to input data into html
-		end
-
-		file.close
-	end
-
-end
-
 class Artist
-	attr_accessor :rank, :name, :artist_url
+	attr_accessor :rank, :name, :artist_url, :photo_links
 
 	def initialize(rank, name, artist_url, photo_links)
 		@rank = rank
@@ -33,23 +14,43 @@ class Artist
 	end
 end
 
+class Database
+	attr_accessor :artist_array, :city, :country
+
+	def initialize(city, country)
+		@artist_array = []
+		@city = city.downcase
+		@country = country.downcase
+	end
+		
+	def convert_erb_html_file
+    	template_file = File.open("web/data_vis_erb.html.erb", 'r').read
+		erb = ERB.new(template_file)
+		File.open("web/data_vis_test.html", 'w+') do |file|
+			file.write(erb.result(binding))
+		end
+	end
+
+end
+
 class Runner
 	BASE_HYPED_URL = "http://www.last.fm/charts/artists/hyped/place"
 	BASE_ARTIST_URL = "http://www.last.fm"
 
 	def self.run
-		@db = Database.new
 
 		# print "Which city? "
 		# country = gets.chomp.delete("'").gsub(/\W+/, "+")
 		# print "Which city? "
 		# city = gets.chomp.delete("'").gsub(/\W+/, "+")
-		country = "Canada".delete("'").gsub(/\W+/, "+")
-		city = "Toronto".delete("'").gsub(/\W+/, "+")
-		full_url = BASE_HYPED_URL + "/" + country + "/" + city
+		country = "United States"
+		city = "Nashville"
+		full_url = BASE_HYPED_URL + "/" + country.delete("'").gsub(/\W+/, "+") + "/" + city.delete("'").gsub(/\W+/, "+")
 
 		hyped_page = Nokogiri::HTML(open(full_url))
 		artists = hyped_page.css('div.rankItem-wrap2 a.rankItem-blockLink')[0..4]
+
+		@db = Database.new(city, country)
 
 		artists.each do |artist|
 			rank = artist.css("h4 span.rankItem-position").text.delete(".")
@@ -67,9 +68,7 @@ class Runner
 			@db.artist_array << Artist.new(rank, name, artist_url, photo_links)
 		end
 
-		puts @db.artist_array.inspect
-
-		# @db.add_to_file
+		@db.convert_erb_html_file
 	end
 end
 

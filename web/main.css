@@ -2,33 +2,170 @@ html {
 	margin: 0;
 }
 
+body {
+	background: url("images/concert-bg.png") no-repeat;
+	height: 1000px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:visited {
+	color: inherit;
+}
+
 .container {
-	width: 856px;
+	width: 980px;
+	height: auto;
 	margin: 0 auto;
 	position: relative;
 }
 
-.rank img {
-	width: 126px;
+header p {
+	text-align: right;
+	font-size: 1.2em;
+	color: #f25749;
+}
+
+header span {
+	color: #171E23;
+	font-size: 1.5em;
+	font-weight: 700;
+}
+
+.container img {
+	width: 100px;
 	margin: 0 10px 10px 0;
 	display: inline-block;
 	float: left;
 	border-radius: 3px;
 }
 
-.rank img.last-in-row {
+.container img.last-in-row {
 	margin-right: 0;
 }
 
-.one div {
-	width: 262px;
-	height: 126px;
-	margin: 0 10px 10px 0;
-	display: inline-block;
+.artist {
+	-webkit-backface-visibility: hidden;
+	overflow: hidden;
 	float: left;
-	background-color: #3f0d09;
+	width: 330px;
+	z-index: 3;
+}
+
+.label {
+	display: block;
+	height: 100px;
+	margin: 0 10px 10px 0;
+	float: left;
 	border-radius: 3px;
-	color: #ffcc66;
 	text-align: center;
-	line-height: 63px;
+	color: #171E23;
+	width: 100px;
+}
+
+a.label {
+	display: block;
+	position: relative;
+}
+
+a .centerbox {
+	position: absolute;
+	top: 50%;
+	height: 100px;
+	width: 100px;
+	margin-top: -33px;
+}
+
+a.box-1 .centerbox {
+	width: 210px;
+}
+
+.rank {
+	font-size: 3em;
+	font-weight: 800;
+}
+
+.centerbox:hover > .rank {
+	display: none;
+}
+
+.name {
+	display: none;
+	font-weight: 700;
+	padding-top: 20px;
+	font-size: .85em
+}
+
+.centerbox:hover > .name {
+	display: block;
+}
+
+.box-1 {
+	width: 210px;
+	background-color: #89cfee;
+}
+
+.box-2 {
+	background-color: #9cbd86;
+}
+
+.box-3 {
+	background-color: #f2f2f2;
+}
+
+.box-4 {
+	background-color: #f25749;
+}
+
+.box-5 {
+	background-color: #f2c230;
+}
+
+.wide {
+	width: 660px;
+}
+
+.right {
+	width: 320px;
+}
+
+#logo {
+	margin-top: 70px;
+	width: 600px;
+	float: left;
+	margin-left: 20px;
+}
+
+footer p {
+	float: right;
+	width: 200px;
+	color: #89cfee;
+	text-align: right;
+	margin-top: 100px;
+}
+
+footer a {
+	color: #f25749;
+}
+
+footer a:hover {
+	text-decoration: underline;
+}
+
+footer a:visited {
+	color: #f25749;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
 }
