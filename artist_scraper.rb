@@ -26,7 +26,7 @@ class Database
 	def convert_erb_html_file
     	template_file = File.open("web/data_vis_erb.html.erb", 'r').read
 		erb = ERB.new(template_file)
-		File.open("web/data_vis_test.html", 'w+') do |file|
+		File.open("web/localfm_#{city}.html", 'w+') do |file|
 			file.write(erb.result(binding))
 		end
 	end
@@ -40,9 +40,10 @@ class Runner
 	def self.run
 
 		# print "Which city? "
-		# country = gets.chomp.delete("'").gsub(/\W+/, "+")
+		# country = gets.chomp
 		# print "Which city? "
-		# city = gets.chomp.delete("'").gsub(/\W+/, "+")
+		# city = gets.chomp
+
 		country = "United States"
 		city = "Nashville"
 		full_url = BASE_HYPED_URL + "/" + country.delete("'").gsub(/\W+/, "+") + "/" + city.delete("'").gsub(/\W+/, "+")
